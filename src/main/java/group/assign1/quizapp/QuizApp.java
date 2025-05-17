@@ -11,7 +11,16 @@ public class QuizApp extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(QuizApp.class.getResource("quiz_layout.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+
+        // Load root node
+        javafx.scene.Parent root = fxmlLoader.load();
+
+        // Create scene
+        Scene scene = new Scene(root, 320, 240);
+
+        // Add stylesheet
+        scene.getStylesheets().add(getClass().getResource("/group/assign1/quizapp/styles.css").toExternalForm());
+
         stage.setTitle("Quiz It");
         stage.setScene(scene);
         stage.show();
