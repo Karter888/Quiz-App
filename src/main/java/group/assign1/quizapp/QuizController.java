@@ -39,19 +39,57 @@ public class QuizController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        //adds listener to enable submit button when an option is selected
+        answerGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            submitButton.setDisable(newValue == null);
+        });
+
+        loadQuestions();
+
+        displayQuestion(currentQuestionIndex);
+
+        updateScoreDisplay();
+
     }
-}
+
 /**
  *  well class loads sampled questions for the quiz
  */
 
 private void loadQuestions() {
 
-}
+    //Need to look up how implement API's and apply them here.
+
+    }
 
 /**
  *  displays question at given index
  */
 private void displayQuestion(int index) {
+      if (index < questions.size()) {
+        Question currentQuestion = questions.get(index);
+
+        questionsLabel.setText(currectQuestion.getQuestionText());
+
+        String[] options = currentQuestion.getOptions();
+        for (int i = 0; i < optionButtons.length; i++) {
+            optionButtons[i].setText(options[i]);
+            optionButtons[i].setDisable(false);
+            optionButtons[i].getStyleClass().remove("wrong-answer");
+            optionButtons[i].getStyleClass().remove("correct-answer");
+        }
+
+        answerGroup.selectToggle(null); // clears prevous selection
+
+        feedBackLabel.setText(""); //clears feedback
+
+        nextButton.setDisable(true); //turns of the next button till the answer is submitted
+      } else {
+          showFinalScore(); // shows final score of all questions answered
+      }
+    }
+
+
+
 
 }
