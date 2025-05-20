@@ -11,9 +11,11 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
+
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.net.URI;
 import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -145,7 +147,7 @@ public class QuizController implements Initializable {
         if (index < questions.size()) {
             Question currentQuestion = questions.get(index);
 
-            questionsLabel.setText(currectQuestion.getQuestionText());
+            questionLabel.setText(currentQuestion.getQuestionText());
 
             String[] options = currentQuestion.getOptions();
             for (int i = 0; i < optionButtons.length; i++) {
@@ -169,18 +171,18 @@ public class QuizController implements Initializable {
      * Handles Submission of Answers
      */
     @FXML
-    private void handleSubmitButtonAction(ActionEvent event) {
+    public void handleSubmitButton(javafx.event.ActionEvent actionEvent) {
 
         //Gets selected radio button
         RadioButton selectedButton = (RadioButton) answerGroup.getSelectedToggle();
 
         //If nothing is selected then
-        //if (selectedOption == null) return;
+        if (selectedButton == null) return;
 
         int selectedIndex = -1;
         for (int i = 0; i < optionButtons.length; i++) {
-            if (optionButtons[i] == selectedOption) {
-                selectedIdex = i;
+            if (optionButtons[i] == selectedButton) {
+                selectedIndex = i;
                 break;
             }
         }
@@ -205,7 +207,7 @@ public class QuizController implements Initializable {
         //Highlights the right and wrong answers
         for (int i = 0; i < optionButtons.length; i++) {
             if (i == currentQuestion.getCorrectAnswerIndex()) {
-                optionButton[i].getStyleClass().add("correct-answer");
+                optionButtons[i].getStyleClass().add("correct-answer");
             } else if (i == selectedIndex && !isCorrect) {
                 optionButtons[i].getStyleClass().add("wrong-answer");
             }
@@ -256,7 +258,7 @@ public class QuizController implements Initializable {
         }
 
         //Display the final score
-        feedBackLabel.setText("Your final score : " + score + "out of" + question.size());
+        feedBackLabel.setText("Your final score : " + score + " out of " + questions.size());
         feedBackLabel.setTextFill(Color.BLUE);
 
         //Disables Both Buttons
