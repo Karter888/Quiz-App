@@ -1,7 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insert?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="group.assign1.quizapp.QuizController"
+      spacing="15"
+      alignment="CENTER"
+      styleClass="quiz-container">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <!-- Question Section -->
+    <Label fx:id="questionLabel"
+           text="Question will appear here"
+           wrapText="true"
+           styleClass="question-label"/>
+
+    <!-- Answer Options Section -->
+    <VBox spacing="10" styleClass="options-container">
+        <fx:define>
+            <ToggleGroup fx:id="answerGroup"/>
+        </fx:define>
+
+        <RadioButton fx:id="option1" text="Option A" toggleGroup="$answerGroup"/>
+        <RadioButton fx:id="option2" text="Option B" toggleGroup="$answerGroup"/>
+        <RadioButton fx:id="option3" text="Option C" toggleGroup="$answerGroup"/>
+        <RadioButton fx:id="option4" text="Option D" toggleGroup="$answerGroup"/>
+    </VBox>
+
+    <!-- Buttons Section -->
+    <HBox spacing="10" alignment="CENTER">
+        <Button fx:id="submitButton"
+                text="Submit"
+                onAction="#handleSubmitButton"
+                disable="true"
+                styleClass="action-button"/>
+
+        <Button fx:id="nextButton"
+                text="Next"
+                onAction="#handleNextButton"
+                disable="true"
+                styleClass="action-button"/>
+    </HBox>
+
+    <!-- Score Section -->
+    <Label fx:id="scoreLabel"
+           text="Score: 0/0"
+           styleClass="score-label"/>
+
+    <!-- Result Feedback Section -->
+    <Label fx:id="feedbackLabel"
+           text=""
+           styleClass="feedback-label"/>
+</VBox>
