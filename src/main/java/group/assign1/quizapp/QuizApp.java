@@ -2,6 +2,7 @@ package group.assign1.quizapp;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -9,24 +10,30 @@ import java.io.IOException;
 
 public class QuizApp extends Application {
     @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(QuizApp.class.getResource("quiz_layout.fxml"));
+    public void start(Stage primaryStage) {
+        try {
+            // Load the FXML file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("src/main/resources/group/assign1/quizapp/quiz_layout.fxml"));
+            Parent root = loader.load();
 
-        // Load root node
-        javafx.scene.Parent root = fxmlLoader.load();
+            // Create the scene
+            Scene scene = new Scene(root);
 
-        // Create scene
-        Scene scene = new Scene(root, 320, 240);
+            // Add CSS styling
+            scene.getStylesheets().add(getClass().getResource("src/main/resources/group/assign1/quizapp/sytle.css").toExternalForm());
 
-        // Add stylesheet
-        scene.getStylesheets().add(getClass().getResource("/group/assign1/quizapp/styles.css").toExternalForm());
-
-        stage.setTitle("Quiz It");
-        stage.setScene(scene);
-        stage.show();
+            // Configure and show the stage
+            primaryStage.setTitle("Quiz It!");
+            primaryStage.setScene(scene);
+            primaryStage.setMinWidth(500);
+            primaryStage.setMinHeight(400);
+            primaryStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
 }
