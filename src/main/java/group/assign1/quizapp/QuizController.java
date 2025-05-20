@@ -7,9 +7,19 @@ import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+
 import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URL;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -58,7 +68,11 @@ public class QuizController implements Initializable {
 
         loadQuestions();
 
-        displayQuestion(currentQuestionIndex);
+        if (!questions.isEmpty()) {
+            displayQuestion(currentQuestionIndex); // Use the current question index
+        } else {
+            questionLabel.setText("No questions available. Please try again later.");
+        }
 
         updateScoreDisplay();
 
@@ -70,9 +84,59 @@ public class QuizController implements Initializable {
 
     private void loadQuestions() {
 
-        //Need to look up how implement API's and apply them here.
+    String apiUrl = "https://opentdb.com/api.php?amount=6&category=18&difficulty=medium&type=multiple";
+        // Step 1: Create an HTTP client
+        HttpClient client = HttpClient.newHttpClient();
+
+        // Step 2: Build the HTTP request
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(apiUrl))
+                .GET()
+                .build();
+
+        try {
+            // Step 3: Send the request and fetch the response
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                // Step 4: Parse JSON response and load questions
+                parseQuestions(response.body());
+            } else {
+                System.out.println("Failed to load questions, HTTP Code: " + response.statusCode());
+            }
+        } catch (IOException | InterruptedException e) {
+            System.out.println("An error occurred while loading questions: " + e.getMessage());
+        }
+
+
+
 
     }
+    private void parseQuestions(String jsonResponse) {
+        // Create a List to temporarily hold questions
+        Gson gson = new Gson();
+        JsonObject jsonObject = gson.fromJson(jsonResponse, JsonObject.class);
+
+        // Extract the "results" section
+        List<JsonObject> results = gson.fromJson(jsonObject.get("results"), List.class);
+
+        for (JsonObject result : results) {
+            String questionText = result.get("question").getAsString();
+            String correctAnswer = result.get("correct_answer").getAsString();
+            List<String> options = gson.fromJson(result.get("incorrect_answers"), List.class);
+
+            // Add the correct answer to the options and shuffle them
+            options.add(correctAnswer);
+            Collections.shuffle(options);
+
+            // Determine the correct option index
+            int correctIndex = options.indexOf(correctAnswer);
+
+            // Add the question to the list
+            questions.add(new Question(questionText, options.toArray(new String[0]), correctIndex));
+        }
+    }
+
 
     /**
      * displays question at given index
