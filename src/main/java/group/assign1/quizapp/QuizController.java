@@ -7,21 +7,11 @@ import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 
-
-import java.awt.event.ActionEvent;
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.net.URI;
 import java.net.URL;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+
 import java.util.ArrayList;
-import java.util.Collections;
+
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -80,63 +70,33 @@ public class QuizController implements Initializable {
 
     }
 
-    /**
-     * well class loads sampled questions for the quiz
-     */
 
     private void loadQuestions() {
+        // Sample questions - In a real app, these might come from a file or database
+        questions.add(new Question(
+                "What is the the beginner starter programe for newbie coders?",
+                new String[] {"Swap variable and values", "To-do list", "Hello World", "I/O program"},
+                2)); // Paris is the correct answer (index 2)
 
-    String apiUrl = "https://opentdb.com/api.php?amount=6&category=18&difficulty=medium&type=multiple";
-        // Step 1: Create an HTTP client
-        HttpClient client = HttpClient.newHttpClient();
+        questions.add(new Question(
+                "Which Language is mainly used for ML?",
+                new String[] {"C#", "Python", "Jupiter", "Html"},
+                1));
 
-        // Step 2: Build the HTTP request
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(apiUrl))
-                .GET()
-                .build();
+        questions.add(new Question(
+                "Whats the best language for beginner programmers?",
+                new String[] {"C++", "Swift", "Python", "Depends on own preference"},
+                3));
 
-        try {
-            // Step 3: Send the request and fetch the response
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        questions.add(new Question(
+                "Which language is used for styling web pages?",
+                new String[] {"HTML", "JavaScript", "Python", "CSS"},
+                3));
 
-            if (response.statusCode() == 200) {
-                // Step 4: Parse JSON response and load questions
-                parseQuestions(response.body());
-            } else {
-                System.out.println("Failed to load questions, HTTP Code: " + response.statusCode());
-            }
-        } catch (IOException | InterruptedException e) {
-            System.out.println("An error occurred while loading questions: " + e.getMessage());
-        }
-
-
-
-
-    }
-    private void parseQuestions(String jsonResponse) {
-        // Create a List to temporarily hold questions
-        Gson gson = new Gson();
-        JsonObject jsonObject = gson.fromJson(jsonResponse, JsonObject.class);
-
-        // Extract the "results" section
-        List<JsonObject> results = gson.fromJson(jsonObject.get("results"), List.class);
-
-        for (JsonObject result : results) {
-            String questionText = result.get("question").getAsString();
-            String correctAnswer = result.get("correct_answer").getAsString();
-            List<String> options = gson.fromJson(result.get("incorrect_answers"), List.class);
-
-            // Add the correct answer to the options and shuffle them
-            options.add(correctAnswer);
-            Collections.shuffle(options);
-
-            // Determine the correct option index
-            int correctIndex = options.indexOf(correctAnswer);
-
-            // Add the question to the list
-            questions.add(new Question(questionText, options.toArray(new String[0]), correctIndex));
-        }
+        questions.add(new Question(
+                "What does the main Class do?",
+                new String[] {"acts as any other function", "Entry point for execution", "only creates an object", "none"},
+                1)); // Hydrogen is the correct answer (index 1)
     }
 
 

@@ -13,14 +13,14 @@ public class QuizApp extends Application {
     public void start(Stage primaryStage) {
         try {
             // Load the FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("src/main/resources/group/assign1/quizapp/quiz_layout.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/group/assign1/quizapp/quiz_layout.fxml"));
             Parent root = loader.load();
 
             // Create the scene
             Scene scene = new Scene(root);
 
             // Add CSS styling
-            scene.getStylesheets().add(getClass().getResource("src/main/resources/group/assign1/quizapp/sytle.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/group/assign1/quizapp/style.css").toExternalForm());
 
             // Configure and show the stage
             primaryStage.setTitle("Quiz It!");

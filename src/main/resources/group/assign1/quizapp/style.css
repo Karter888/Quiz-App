@@ -10,17 +10,14 @@
     -fx-font-weight: bold;
     -fx-text-fill: #2c3e50;
     -fx-padding: 10px;
-    -fx-background-color: #ecf0f1;
-    -fx-background-radius: 5px;
-    -fx-border-color: #bdc3c7;
-    -fx-border-radius: 5px;
+
+
 }
 
 /* Options styling */
 .options-container {
     -fx-padding: 10px;
-    -fx-background-color: white;
-    -fx-background-radius: 5px;
+
     -fx-border-color: #bdc3c7;
     -fx-border-radius: 5px;
 }
